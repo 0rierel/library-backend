@@ -1,0 +1,19 @@
+{
+  "book": {
+    "id": 0,
+    "name": "לא רציונלי ולא במקרה",
+    "writer": "$idreference for writer",
+    "readers": ["$idreferences for users"]
+  },
+  "writer": {
+    "id": 0,
+    "name": "יובל נח הררי",
+    "books": ["$idreference for books"]
+  },
+  "user": {
+    "id": 0,
+    "name": "עידן דוידי",
+    "beenRead": ["$idreference for books"],
+    "favorite": "$idreference for book"
+  }
+}
