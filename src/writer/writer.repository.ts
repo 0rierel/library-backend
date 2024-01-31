@@ -5,7 +5,9 @@ import { Writer } from './writer.schema';
 
 @Injectable()
 export class WriterRepository {
-  constructor(@InjectModel('Writer') private readonly writerModel: Model<Writer>) {}
+  constructor(
+    @InjectModel('Writer') private readonly writerModel: Model<Writer>,
+  ) {}
 
   async findAll(): Promise<Writer[]> {
     return this.writerModel.find().exec();
@@ -19,6 +21,9 @@ export class WriterRepository {
     const createdWriter = new this.writerModel(writerData);
     return createdWriter.save();
   }
-
+  async update(writerData: Partial<Writer>, id: string): Promise<Writer> {
+    return await this.writerModel
+      .findOneAndUpdate({ _id: id }, writerData, { new: true })
+      .exec();
+  }
 }
-

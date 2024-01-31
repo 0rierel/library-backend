@@ -21,5 +21,11 @@ export class UserService {
   async updateFavorite( userId: number,bookId: number): Promise<User> {
     return this.userRepository.updateFavorite(userId,bookId);
   }
+  async delete (userId: string): Promise<void> {
+    this.userRepository.delete(userId);
+  }
+  async update (userId: string, userData: Partial<User>): Promise<User> { 
+    return this.userRepository.update(userId, userData);
+  }
 
 }

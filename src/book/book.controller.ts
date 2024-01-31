@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book } from './book.schema';
 
@@ -24,7 +32,8 @@ export class BookController {
   async deleteById(@Param('id') id: string) {
     this.bookService.deleteById(id);
   }
-  
-
-
+  @Put(':id')
+  async update(@Body() bookData: Partial<Book>, @Param('id') id: string) {
+    return this.bookService.update(id, bookData);
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { WriterService } from './writer.service';
 import { Writer } from './writer.schema';
 
@@ -20,5 +20,8 @@ export class WriterController {
   async create(@Body() writerData: Partial<Writer>) {
     return this.writerService.create(writerData);
   }
-
+  @Put(':id')
+  async update(@Body() writerData: Partial<Writer>, @Param('id') id: string) {
+    return this.writerService.update(writerData, id);
+  }
 }

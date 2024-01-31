@@ -11,7 +11,6 @@ export class UserRepository {
     return this.userModel.find().exec();
   }
 
-
   async findById(id: string): Promise<User | null> {
     return this.userModel.findById(id).populate('beenRead favorite').exec();
   }
@@ -20,7 +19,16 @@ export class UserRepository {
     const createdUser = new this.userModel(userData);
     return createdUser.save();
   }
-  async updateFavorite( userId: number,bookId: number): Promise<User> {
+  async delete(id: string): Promise<void> {
+    this.userModel.findByIdAndDelete(id).exec();
+  }
+  async update(userId: string, userData: Partial<User>): Promise<User> {
+    return await this.userModel
+      .findOneAndUpdate({ _id: userId }, userData, { new: true })
+      .exec();
+  }
+
+  async updateFavorite(userId: number, bookId: number): Promise<User> {
     const user = await this.userModel.findById(userId).exec();
 
     if (!user) {
@@ -30,5 +38,4 @@ export class UserRepository {
     user.favorite = bookId;
     return user.save();
   }
-
 }

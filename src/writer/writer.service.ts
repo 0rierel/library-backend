@@ -17,5 +17,7 @@ export class WriterService {
   async create(writerData: Partial<Writer>): Promise<Writer> {
     return this.writerRepository.create(writerData);
   }
-
+  async update(writerData: Partial<Writer>, id: string): Promise<Writer> {
+    return this.writerRepository.update(writerData, id);
+  }
 }

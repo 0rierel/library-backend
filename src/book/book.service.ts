@@ -20,5 +20,7 @@ export class BookService {
   async deleteById(id: string): Promise<void> {
     this.bookRepository.deleteById(id);
   }
-
+  async update(bookId: string, bookData: Partial<Book>): Promise<Book> {
+    return this.bookRepository.update(bookId, bookData);
+  }
 }

@@ -23,5 +23,10 @@ export class BookRepository {
   async deleteById(id: string): Promise<void> {
     this.bookModel.findByIdAndDelete(id).exec();
   }
+  async update(bookId: string, bookData: Partial<Book>): Promise<Book> {
+    return await this.bookModel
+      .findOneAndUpdate({ _id: bookId }, bookData, { new: true })
+      .exec();
+  }
 
 }
