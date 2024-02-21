@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
 
 @Schema()
-export class User extends Document {
+export class Author extends Document {
   @Prop({ required: true })
   _id: number
 
@@ -10,10 +10,7 @@ export class User extends Document {
   name: string
 
   @Prop({ type: [Number], ref: 'Book' })
-  beenRead: number[]
-
-  @Prop({ type: Number, ref: 'Book' })
-  favorite: number
+  books: number[]
 }
 
-export const UserSchema = SchemaFactory.createForClass(User)
+export const AuthorSchema = SchemaFactory.createForClass(Author)

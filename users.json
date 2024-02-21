@@ -1,26 +1,26 @@
 [
-    {
-      "_id": 1,
-      "name": "עידן דוידי",
-      "beenRead": [1, 3, 5],
-      "favorite": 2
-    },
-    {
-      "_id": 2,
-      "name": "דנה כהן",
-      "beenRead": [2, 5],
-      "favorite": 3
-    },
-    {
-      "_id": 3,
-      "name": "נועה לוי",
-      "beenRead": [1, 3, 4],
-      "favorite": 1
-    },
-    {
-      "_id": 4,
-      "name": "אביה כהן",
-      "beenRead": [2, 4, 5],
-      "favorite": 4
-    }
-  ]
+  {
+    "_id": 1,
+    "name": "עידן דוידי",
+    "beenRead": [],
+    "favorite": 1
+  },
+  {
+    "_id": 2,
+    "name": "דנה כהן",
+    "beenRead": [],
+    "favorite": 2
+  },
+  {
+    "_id": 3,
+    "name": "נועה לוי",
+    "beenRead": [],
+    "favorite": 1
+  },
+  {
+    "_id": 4,
+    "name": "אביה כהן",
+    "beenRead": [],
+    "favorite": 4
+  }
+]

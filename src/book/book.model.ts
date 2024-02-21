@@ -1,4 +1,4 @@
-import { model } from 'mongoose';
-import { Book, BookSchema } from './book.schema';
+import { model } from 'mongoose'
+import { Book, BookSchema } from './book.schema'
 
-export const BookModel = model<Book>('Book', BookSchema);
+export const BookModel = model<Book>('Book', BookSchema)

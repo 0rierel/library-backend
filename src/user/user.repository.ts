@@ -1,41 +1,93 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { User } from './user.schema';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { Model } from 'mongoose'
+import { InjectModel } from '@nestjs/mongoose'
+import { User } from './user.schema'
 
 @Injectable()
 export class UserRepository {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+    return await this.userModel.find().exec()
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id).populate('beenRead favorite').exec();
+    return await this.userModel
+      .findById(id)
+      .populate({
+        path: 'beenRead',
+        populate: { path: 'author' },
+      })
+      .populate('favorite')
+      .exec()
   }
 
   async create(userData: Partial<User>): Promise<User> {
-    const createdUser = new this.userModel(userData);
-    return createdUser.save();
+    const createdUser = new this.userModel(userData)
+    return await createdUser.save()
   }
   async delete(id: string): Promise<void> {
-    this.userModel.findByIdAndDelete(id).exec();
+    await this.userModel.findByIdAndDelete(id).exec()
   }
   async update(userId: string, userData: Partial<User>): Promise<User> {
-    return await this.userModel
-      .findOneAndUpdate({ _id: userId }, userData, { new: true })
-      .exec();
+    return await this.userModel.findOneAndUpdate({ _id: userId }, userData, { new: true }).exec()
   }
 
   async updateFavorite(userId: number, bookId: number): Promise<User> {
-    const user = await this.userModel.findById(userId).exec();
+    const user = await this.userModel
+      .findById(userId)
+      .populate({
+        path: 'beenRead',
+        populate: { path: 'author' },
+      })
+      .exec()
 
     if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
+      throw new NotFoundException(`User with ID ${userId} not found`)
     }
 
-    user.favorite = bookId;
-    return user.save();
+    user.favorite = bookId
+
+    await user.populate('favorite')
+
+    return user.save()
+  }
+  // only being called through book controller to remove both sides of the refs
+  async removeFromBeenRead(userId: string, bookId: string): Promise<void> {
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { _id: userId, beenRead: bookId },
+      { $pull: { beenRead: bookId } },
+      { new: true },
+    )
+
+    if (!updatedUser) {
+      throw new NotFoundException(`User with ID ${userId} not found or book not in beenRead.`)
+    }
+  }
+
+  // only being called through book controller to add both sides of the refs
+  async addToBeenRead(userId: string, bookId: string): Promise<void> {
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { _id: userId, beenRead: { $ne: bookId } },
+      { $addToSet: { beenRead: bookId } },
+      { new: true },
+    )
+
+    if (!updatedUser) {
+      throw new NotFoundException(`User with ID ${userId} not found or book already in beenRead.`)
+    }
+  }
+  async removeBookReferences(bookId: string): Promise<void> {
+    await this.userModel
+      .updateMany({ beenRead: bookId, favorite: bookId }, { $pull: { beenRead: bookId, favorite: bookId } })
+      .exec()
+  }
+  async removeBooksReferencesFromUsers(bookIds: number[]): Promise<void> {
+    await this.userModel
+      .updateMany(
+        { $or: bookIds.map((bookId) => ({ beenRead: bookId, favorite: bookId })) },
+        { $pullAll: { beenRead: bookIds, favorite: bookIds } },
+      )
+      .exec()
   }
 }

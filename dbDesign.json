@@ -2,10 +2,10 @@
   "book": {
     "_id": 0,
     "name": "לא רציונלי ולא במקרה",
-    "writer": "$idreference for writer",
+    "author": "$idreference for author",
     "readers": ["$idreferences for users"]
   },
-  "writer": {
+  "author": {
     "_id": 0,
     "name": "יובל נח הררי",
     "books": ["$idreference for books"]

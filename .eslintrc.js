@@ -17,9 +17,34 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    "import/newline-after-import": ["error", { "count": 1 }],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'import/order': [
+      'error',
+      {
+        'groups': [
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling', 'index'],
+        ],
+        'pathGroups': [
+          {
+            'pattern': '@nestjs/**',
+            'group': 'internal',
+            'position': 'after',
+          },
+        ],
+        'pathGroupsExcludedImportTypes': ['builtin'],
+        'newlines-between': 'always',
+        'alphabetize': {
+          'order': 'asc',
+          'caseInsensitive': true,
+        },
+      },
+    ],
   },
 };
