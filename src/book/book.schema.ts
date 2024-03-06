@@ -18,7 +18,6 @@ export class Book extends Document {
 
 export const BookSchema = SchemaFactory.createForClass(Book)
 
-// לקבל או ליצור ממונגו objectId
 async function preSaveMiddleware(next) {
   if (!this._id) {
     const highestIdDoc = await (this.constructor as Model<Book>).findOne({}, {}, { sort: { _id: -1 } })

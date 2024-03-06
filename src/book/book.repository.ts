@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Book } from './book.schema'
-import { UserRepository } from '../user/user.repository'
 
 @Injectable()
 export class BookRepository {

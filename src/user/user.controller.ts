@@ -2,14 +2,14 @@ import { Controller, Get, Post, Body, Param, Put, Patch, Delete } from '@nestjs/
 import { UserService } from './user.service'
 import { User } from './user.schema'
 import { BookService } from 'src/book/book.service'
-// בקשות קריאות
+
 @Controller('users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly bookService: BookService,
   ) {}
-  @Get()
+  @Get('getAll')
   async findAll() {
     return await this.userService.findAll()
   }
@@ -19,22 +19,22 @@ export class UserController {
     return await this.userService.findById(id)
   }
 
-  @Post()
-  async create(@Body() userData: Partial<User>) {
-    return await this.userService.create(userData)
+  @Post('addUser')
+  async create(@Body() body:{userName: string}) {
+    return await this.userService.create(body.userName)
   }
-  @Patch(':userId/:bookId')
+  @Patch(':userId/updateFavorite/:bookId')
   async updateFavorite(@Param('userId') userId: number, @Param('bookId') bookId: number) {
     return await this.userService.updateFavorite(userId, bookId)
   }
 
-  @Delete(':id')
+  @Delete('removeUser/:id')
   async delete(@Param('id') id: string) {
     await this.userService.delete(id)
     await this.bookService.removeReaderFromAllBooks(id)
   }
 
-  @Put(':id')
+  @Put('updateuser/:id')
   async update(@Param('id') id: string, @Body() userData: Partial<User>) {
     return await this.userService.update(id, userData)
   }

@@ -14,8 +14,8 @@ export class UserService {
     return await this.userRepository.findById(id)
   }
 
-  async create(userData: Partial<User>): Promise<User> {
-    return await this.userRepository.create(userData)
+  async create(userName: string): Promise<User> {
+    return await this.userRepository.create(userName)
   }
   async updateFavorite(userId: number, bookId: number): Promise<User> {
     return await this.userRepository.updateFavorite(userId, bookId)
